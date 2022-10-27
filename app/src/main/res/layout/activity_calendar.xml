@@ -44,6 +44,21 @@
         android:text="ZAPISZ"
         android:textColor="@color/white" />
 
+
+    <Button
+        android:id="@+id/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/rounded"
+        android:backgroundTint="@color/navy"
+        android:gravity="center"
+        android:text="ZAPISZ"
+        android:textColor="@color/white" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCalendar"
         app:titleTextColor="@color/white"
@@ -52,9 +67,6 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
-
-    ouldn't add remote: remote origin already exists.
-
 
 
 </RelativeLayout>

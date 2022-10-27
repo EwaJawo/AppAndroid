@@ -25,7 +25,7 @@ public class CalendarActivity extends AppCompatActivity {
     private TextView selectedDate;
     private CalendarView calendarView;
     private Button saveTextButton;
-
+    private Button getSaveTextButton;
 
 
     @Override
@@ -35,8 +35,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
         saveTextButton = findViewById(R.id.saveTextButton);
-        selectedDate= findViewById (R.id. selectedDate);
-
         Toolbar toolbar = findViewById (R.id.toolbarCalendar);
         setSupportActionBar(toolbar);
 
