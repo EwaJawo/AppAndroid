@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,15 +38,13 @@ public class CalendarActivity extends AppCompatActivity {
         saveTextButton = findViewById(R.id.saveTextButton);
         Toolbar toolbar = findViewById (R.id.toolbarCalendar);
         setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar ();
         actionBar.setDisplayHomeAsUpEnabled (true);
 
         calendarView.setOnDateChangeListener ( new CalendarView.OnDateChangeListener () {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                String date = i2 +"/"+i1+"/"+i;
-                selectedDate.setText(date);
+                Toast.makeText(getApplicationContext (),i2 + "/" + i1 + "/" + i, Toast.LENGTH_LONG).show ();
             }
         } );
     }

@@ -13,4 +13,5 @@
     <style name = "ProgressBarStyle">
     <item name="colorAccent">@color/navy</item>
     </style>
+
 </resources>
