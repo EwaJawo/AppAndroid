@@ -22,15 +22,16 @@
             android:layout_margin="10dp"/>
 
         <TextView
-            android:layout_width="127dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/currentDate"
             android:gravity="center"
             android:layout_marginTop="4dp"
             android:layout_weight="3"
             android:text="CurrentDate"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/nextBtn"
@@ -44,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddiingTop= "4dp"
+        android:paddingTop= "4dp"
         android:paddingBottom="4dp"
         android:background="@color/navy">
 

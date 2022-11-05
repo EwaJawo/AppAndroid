@@ -23,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         addEvent.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( HomeActivity.this,CalendarActivity.class);
+                Intent intent = new Intent( HomeActivity.this,CustomCalendarView.class);
                 startActivity(intent);
             }
         } );
