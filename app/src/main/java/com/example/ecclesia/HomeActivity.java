@@ -13,6 +13,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button logout;
     private Button addEvent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
@@ -20,10 +21,11 @@ public class HomeActivity extends AppCompatActivity {
         logout = findViewById(R.id.btnLogOut);
         addEvent = findViewById(R.id.btnAddEvent);
 
+
         addEvent.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( HomeActivity.this,CustomCalendarView.class);
+                Intent intent = new Intent( HomeActivity.this,Calendar_Activity.class);
                 startActivity(intent);
             }
         } );

@@ -60,7 +60,7 @@
         android:layout_below="@+id/addMassIntention"
         android:textColor="@color/white"
         android:layout_marginLeft="85dp"
-        android:background="@drawable/calendar"/>
+        android:background="@drawable/calendar" />
 
     <Button
         android:id="@+id/btnLogOut"
@@ -75,6 +75,8 @@
         android:hint="WYLOGUJ SIĘ "
         android:gravity="center"
         android:textColorHint="@color/white" />
+
+
 
 
 </RelativeLayout>

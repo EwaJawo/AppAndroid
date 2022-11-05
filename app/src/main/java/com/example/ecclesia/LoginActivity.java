@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEdit, passwordEdit;
     private Button loginIn;
     private TextView signUp;
-    //private TextView forgotPassword;
+    private TextView forgotPassword;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
     private Boolean emailAddressCheck;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEdit = findViewById (R.id.passwordLogin);
         loginIn = findViewById (R.id.btnLogin);
         signUp = findViewById (R.id.textSignUp);
-        //forgotPassword = findViewById (R.id.textForgotPassword);
+        forgotPassword = findViewById (R.id.textForgotPassword);
         progressBar = findViewById ( R.id.progressBar);
 
         loginIn.setOnClickListener ( new View.OnClickListener () {
@@ -56,6 +56,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent ( LoginActivity.this, Registration.class );
+                startActivity ( intent );
+                finish ();
+            }
+        } );
+
+        forgotPassword .setOnClickListener ( new View.OnClickListener () {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent ( LoginActivity.this, ForgotPassword.class );
                 startActivity ( intent );
                 finish ();
             }

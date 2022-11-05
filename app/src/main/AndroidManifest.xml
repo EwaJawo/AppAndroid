@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecclesia">
+        <activity android:name=".Calendar_Activity"></activity>
+
         <activity
             android:name=".CalendarActivity"
             android:parentActivityName=".HomeActivity" />
