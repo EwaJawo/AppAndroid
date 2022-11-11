@@ -18,10 +18,6 @@
         android:theme="@style/Theme.Ecclesia">
         <activity android:name=".Calendar_Activity"></activity>
 
-        <activity
-            android:name=".CalendarActivity"
-            android:parentActivityName=".HomeActivity" />
-
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".HomeActivity" />

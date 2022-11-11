@@ -1,39 +1,51 @@
 package com.example.ecclesia;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class CustomCalendarView extends LinearLayout
 {
     ImageButton NextButton, PastButton;
     TextView CurrentDate;
     GridView gridView;
-    private static  final int MMAX_CALENDAR_DAYS = 42;
+    private static  final int MAX_CALENDAR_DAYS = 42;
     Calendar calendar = Calendar.getInstance(Locale.forLanguageTag ("pl-PL"));
     Context context;
-    SimpleDateFormat dateFormat = new SimpleDateFormat ("MMMM yyyy", Locale.forLanguageTag ("pl-PL" ));
-    SimpleDateFormat monthFormat = new SimpleDateFormat ("MMMM", Locale.forLanguageTag ("pl-PL" ));
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat ("LLLL yyyy", Locale.forLanguageTag ("pl-PL" ));
+    SimpleDateFormat monthFormat = new SimpleDateFormat ("LLLL", Locale.forLanguageTag ("pl-PL" ));
     SimpleDateFormat  yearFormate = new SimpleDateFormat ("yyyy", Locale.forLanguageTag ("pl-PL" ));
+
+    MyGridAdapter myGridAdapter;
+    AlertDialog alertDialog;
 
     List<Date> dates = new ArrayList<>();
     List<Events> eventsList = new ArrayList<>();
+    DBOpenHelper dbOpenHelper;
 
     public CustomCalendarView(Context context)
     {
@@ -62,12 +74,76 @@ public class CustomCalendarView extends LinearLayout
                 SetUpCalendar ();
             }
         } );
+
+        gridView.setOnItemClickListener ( new AdapterView.OnItemClickListener () {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+                View addView = LayoutInflater.from(adapterView.getContext()).inflate(R.layout.add_new_event,null);
+                EditText EventName = addView.findViewById(R.id.eventsId);
+                TextView EventTime = addView.findViewById(R.id.eventTime);
+                ImageButton SetTime = addView.findViewById(R.id.time);
+                Button AddEvent = addView.findViewById(R.id.addEvent);
+                SetTime.setOnClickListener ( new OnClickListener ()
+                {
+                    @Override
+                    public void onClick(View view) {
+                        Calendar calendar = Calendar.getInstance();
+                        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+                        int minuts = calendar.get(Calendar.MINUTE);
+                        TimePickerDialog timePickerDialog = new TimePickerDialog ( addView.getContext (), R.style.Theme_AppCompat_Dialog, new TimePickerDialog.OnTimeSetListener () {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int i, int i1)
+                            {
+                                Calendar c = Calendar.getInstance ();
+                                c.set(Calendar.HOUR_OF_DAY,i);
+                                c.set(Calendar.MINUTE,i1);
+                                c.setTimeZone( TimeZone.getDefault());
+                                SimpleDateFormat hformate = new SimpleDateFormat ("K:mm a", Locale.forLanguageTag ("pl-PL" ));
+                                String event_Time = hformate.format(c.getTime());
+                                EventTime.setText(event_Time);
+                            }
+                        },hours,minuts,false);
+                        timePickerDialog.show();
+                    }
+                } );
+               final String date =  dateFormat.format(dates.get(i));
+               final String month = monthFormat.format (dates.get(i));
+               final String year = yearFormate.format(dates.get (i));
+
+                AddEvent.setOnClickListener ( new OnClickListener () {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year);
+                        SetUpCalendar();
+                        alertDialog.dismiss();
+                    }
+                } );
+
+                builder.setView(addView);
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+        } );
+
     }
 
     public CustomCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
     {
         super ( context, attrs, defStyleAttr );
     }
+    private void SaveEvent (String event, String time, String date, String month, String year)
+    {
+        dbOpenHelper = new DBOpenHelper(context);
+        SQLiteDatabase database =  dbOpenHelper.getWritableDatabase();
+        dbOpenHelper.SaveEvent(event,time,date,month,year,database);
+        dbOpenHelper.close();
+        Toast.makeText ( context, "Zapisano", Toast.LENGTH_SHORT ).show ();
+    }
+
 
     private void IntializeLayout()
     {
@@ -81,8 +157,22 @@ public class CustomCalendarView extends LinearLayout
 
     private void SetUpCalendar ()
     {
-       String currentDate = dateFormat.format(calendar.getTime ());
-       CurrentDate.setText(currentDate);
+         String currentDate = dateFormat.format(calendar.getTime ());
+        CurrentDate.setText(currentDate);
+        dates.clear();
+        Calendar monthCalendar= (Calendar) calendar.clone();
+        monthCalendar.set (Calendar.DAY_OF_MONTH,1);
+        int FirstDayofMonth = monthCalendar.get(Calendar.DAY_OF_WEEK)-1;
+        monthCalendar.add(Calendar.DAY_OF_MONTH, - FirstDayofMonth);
+
+        while (dates.size() < MAX_CALENDAR_DAYS)
+        {
+            dates.add(monthCalendar.getTime());
+            monthCalendar.add(Calendar.DAY_OF_MONTH,1 );
+        }
+        myGridAdapter = new MyGridAdapter(context,dates,calendar,eventsList);
+        gridView.setAdapter(myGridAdapter);
+
     }
 
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/navy"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/eventsId"
+        android:layout_height="55dp"
+        android:background="@color/light_gray"
+        android:hint="Nazwa wydarzenia"
+        android:inputType="textShortMessage"
+        android:layout_margin="25dp"
+        android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/time"
+            android:layout_width="45dp"
+            android:layout_height="32dp"
+            android:layout_margin="12dp"
+            android:background="@color/navy"
+            android:src="@drawable/ic_time"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/eventTime"
+            android:gravity="center"
+            android:text="00:00 AM"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addEvent"
+        android:text="Dodaj"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:background="@color/light_gray"
+        android:textColor="@color/black"/>
+
+</LinearLayout>
