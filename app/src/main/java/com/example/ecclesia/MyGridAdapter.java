@@ -51,7 +51,7 @@ public class MyGridAdapter extends ArrayAdapter
 
         if (displayMonth == currentMonth && displayYear == currentYear)
         {
-            view.setBackgroundColor(getContext().getResources().getColor (R.color.green));
+            view.setBackgroundColor(getContext().getResources().getColor (R.color.navy));
 
          }
         else
