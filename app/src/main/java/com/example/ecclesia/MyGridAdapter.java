@@ -68,9 +68,9 @@ public class MyGridAdapter extends ArrayAdapter
         Day_Number.setText(String.valueOf(DayNo));
         Calendar eventCalendar = Calendar.getInstance(Locale.forLanguageTag ("pl-PL"));
         ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0;1 < events.size();i++)
+        for (int i = 0; i < events.size();i++)
         {
-            eventCalendar.setTime(ConvertStringToDate(events.get(i).getDATE ()));
+            eventCalendar.setTime(ConvertStringToDate (events.get(i).getDATE()));
             if (DayNo == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH)+1 && displayYear == eventCalendar.get(Calendar.YEAR))
             {
                 arrayList.add(events.get(i).getEVENT());
