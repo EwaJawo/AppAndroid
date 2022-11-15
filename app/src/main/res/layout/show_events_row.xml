@@ -10,8 +10,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="10sp">
+        app:cardCornerRadius="15dp"
+        app:cardElevation="12sp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/eventName"
                 android:gravity="center"
-                android:textColor="@color/light_blue"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:text="Wydarzenie"
                 android:textSize="35dp"/>
@@ -47,9 +47,6 @@
                 android:textStyle="bold"
                 android:text="Godzina"
                 android:textSize="20dp"/>
-
-
-
 
         </LinearLayout>
 

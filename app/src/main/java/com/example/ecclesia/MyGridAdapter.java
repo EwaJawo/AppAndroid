@@ -24,15 +24,15 @@ public class MyGridAdapter extends ArrayAdapter
 {
     List<Date>dates;
     Calendar currentDate;
-    List<Events> events;
+    List<Events> events; //eventsList
     LayoutInflater inflater;
 
     public MyGridAdapter(@NonNull Context context, List<Date>dates,Calendar currentDate, List<Events> events)
     {
         super ( context, R.layout.single_cell);
-        this.dates=dates;
-        this.currentDate=currentDate;
-        this.events=events;
+        this.dates = dates;
+        this.currentDate = currentDate;
+        this.events = events;
         inflater = LayoutInflater.from(context);
     }
     @NonNull
@@ -74,11 +74,26 @@ public class MyGridAdapter extends ArrayAdapter
             if (DayNo == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH)+1 && displayYear == eventCalendar.get(Calendar.YEAR))
             {
                 arrayList.add(events.get(i).getEVENT());
-                EventNumber.setText(arrayList.size()+" events");
+                EventNumber.setText(arrayList.size()+" event");
             }
         }
 
         return view;
+    }
+
+    @Override
+    public int getCount() {
+        return dates.size();
+    }
+    @Nullable
+    @Override
+    public Object getItem(int position) {
+        return dates.get(position);
+    }
+
+    @Override
+    public int getPosition(@Nullable Object item) {
+        return dates.indexOf(item);
     }
 
     private  Date  ConvertStringToDate(String eventDate)
@@ -87,26 +102,9 @@ public class MyGridAdapter extends ArrayAdapter
         Date date = null;
         try {
             date = format.parse(eventDate);
-        } catch (ParseException e) {
+        } catch (java.text.ParseException e) {
             e.printStackTrace ();
         }
         return date;
-    }
-
-    @Override
-    public int getCount() {
-        return dates.size();
-
-    }
-
-    @Override
-    public int getPosition(@Nullable Object item) {
-        return dates.indexOf(item);
-    }
-
-    @Nullable
-    @Override
-    public Object getItem(int position) {
-        return dates.get(position);
     }
 }

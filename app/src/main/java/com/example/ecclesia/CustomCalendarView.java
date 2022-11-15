@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -108,14 +109,14 @@ public class CustomCalendarView extends LinearLayout
                         timePickerDialog.show ();
                     }
                 } );
-                final String date = eventDateFormate.format ( dates.get ( i ) );
-                final String month = monthFormat.format ( dates.get ( i ) );
-                final String year = yearFormate.format ( dates.get ( i ) );
+                final String date = eventDateFormate.format (dates.get (i));
+                final String month = monthFormat.format (dates.get (i));
+                final String year = yearFormate.format (dates.get (i));
 
                 AddEvent.setOnClickListener ( new OnClickListener () {
                     @Override
                     public void onClick(View view) {
-                        SaveEvent ( EventName.getText ().toString (), EventTime.getText ().toString (), date, month, year );
+                        SaveEvent (EventName.getText ().toString (), EventTime.getText ().toString (), date, month, year );
                         SetUpCalendar ();
                         alertDialog.dismiss ();
                     }
@@ -126,33 +127,33 @@ public class CustomCalendarView extends LinearLayout
                 alertDialog.show ();
             }
         } );
+
+
         gridView.setOnItemLongClickListener ( new AdapterView.OnItemLongClickListener () {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String date = eventDateFormate.format ( dates.get ( i ) );
-                AlertDialog.Builder builder = new AlertDialog.Builder ( context );
-                builder.setCancelable ( true );
-                View showView = LayoutInflater.from ( adapterView.getContext () ).inflate ( R.layout.show_events_row, null );
+                final String date = eventDateFormate.format( dates.get(i) );
+                AlertDialog.Builder builder = new AlertDialog.Builder(context );
+                builder.setCancelable (true);
+                View showView = LayoutInflater.from (adapterView.getContext()).inflate(R.layout.display_events,null );
+                RecyclerView recyclerView = showView.findViewById(R.id.EventsNumber);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager ( showView.getContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setHasFixedSize(true);
+                EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter (showView.getContext(),CollectEventByDate(date));
+                recyclerView.setAdapter(eventRecyclerAdapter);
+                eventRecyclerAdapter.notifyDataSetChanged();
 
-                RecyclerView recyclerView = showView.findViewById ( R.id.EventsNumber );
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager ( showView.getContext () );
-                recyclerView.setLayoutManager ( layoutManager );
-                recyclerView.setHasFixedSize ( true );
-                EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter ( showView.getContext (), CollectEventByDate ( date ) );
-                recyclerView.setAdapter ( eventRecyclerAdapter );
-                eventRecyclerAdapter.notifyDataSetChanged ();
-
-                builder.setView ( showView );
+                builder.setView (showView);
                 alertDialog = builder.create ();
                 alertDialog.show ();
                 return true;
             }
         } );
     }
-          public CustomCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
-        {
-            super ( context, attrs, defStyleAttr );
-        }
+
+
+
 
     private ArrayList<Events> CollectEventByDate(String date)
     {
@@ -171,9 +172,15 @@ public class CustomCalendarView extends LinearLayout
             arrayList.add(events);
         }
         cursor.close();
-        dbOpenHelper.close();
+       dbOpenHelper.close();
         return arrayList;
     }
+          public CustomCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
+        {
+            super ( context, attrs, defStyleAttr );
+        }
+
+
 
     private void IntializeLayout()
     {
