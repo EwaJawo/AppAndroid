@@ -61,5 +61,12 @@ public class DBOpenHelper  extends SQLiteOpenHelper
 
         return  sqLiteDatabase.query (DBStructure.EVENT_TABLE_NAME, Projections,Selection, SelectionArgs,null,null, null);
     }
+    public  void deleteEvent(String event, String date, String time, SQLiteDatabase sqLiteDatabase)
+    {
+        String selection = DBStructure.EVENT+"=? and "+DBStructure.DATE+"=? and "+DBStructure.TIME+"=?";
+        String[] selectionArg = {event,date,time};
+        sqLiteDatabase.delete(DBStructure.EVENT_TABLE_NAME,selection,selectionArg);
+    }
+
 }
 

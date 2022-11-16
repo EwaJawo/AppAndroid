@@ -16,14 +16,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/blue_02">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/eventDate"
                 android:gravity="center"
-                 android:textColor="@color/light_blue"
+                 android:textColor="@color/dark_gray"
                 android:textStyle="bold"
                 android:text="Data"
                 android:textSize="14dp"/>
@@ -43,10 +44,21 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/Time"
                 android:gravity="center"
-                android:textColor="@color/light_blue"
+                android:textColor="@color/dark_gray"
                 android:textStyle="bold"
                 android:text="Godzina"
                 android:textSize="20dp"/>
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnDelete"
+                android:text="Usuń"
+                android:textAllCaps="false"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
 
