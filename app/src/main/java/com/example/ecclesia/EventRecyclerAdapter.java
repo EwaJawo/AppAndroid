@@ -1,17 +1,26 @@
 package com.example.ecclesia;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder>
 {
@@ -35,7 +44,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position)
     {
-        Events events = arrayList.get(position);
+        final  Events events = arrayList.get(position);
         holder.Event.setText(events.getEVENT());
         holder.Date.setText(events.getDATE ());
         holder.Time.setText(events.getTIME());
@@ -47,6 +56,48 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
                 deleteCalendarEvent(events.getEVENT(), events.getDATE(),events.getTIME());
                 arrayList.remove(position);
                 notifyDataSetChanged();
+            }
+        } );
+
+        if (isAlarmed(events.getDATE(),events.getEVENT(),events.getTIME()))
+        {
+            holder.setAlarm.setImageResource(R.drawable.ic_action_notification_on);
+        }else
+        {
+            holder.setAlarm.setImageResource(R.drawable.ic_action_notification_off);
+        }
+        Calendar datecalendar = Calendar.getInstance();
+        datecalendar.setTime(ConvertStringToDate(events.getDATE()));
+        int alarmYear = datecalendar.get(Calendar.YEAR);
+        int alarmMonth = datecalendar.get(Calendar.MONTH);
+        int alarmDay = datecalendar.get(Calendar.DAY_OF_MONTH);
+        Calendar timecalendar = Calendar.getInstance();
+        timecalendar.setTime(ConvertStringToTime(events.getTIME()));
+        int alarmHour = timecalendar.get(Calendar.HOUR_OF_DAY);
+        int alarmMinutes = timecalendar.get(Calendar.MINUTE);
+
+
+        holder.setAlarm.setOnClickListener ( new View.OnClickListener () {
+            @Override
+            public void onClick(View v)
+            {
+                if (isAlarmed(events.getDATE(), events.getEVENT(), events.getTIME()))
+                {
+                    holder.setAlarm.setImageResource(R.drawable.ic_action_notification_off);
+                    cancelAlarm(getRequestCode(events.getDATE(),events.getEVENT(),events.getTIME()));
+                    updateEvent(events.getDATE(),events.getEVENT(),events.getTIME(),"off");
+                    notifyDataSetChanged();
+                }
+                else{
+                    holder.setAlarm.setImageResource(R.drawable.ic_action_notification_on);
+                    Calendar alarmCalendar = Calendar.getInstance();
+                    alarmCalendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinutes);
+                    setAlarm(alarmCalendar,events.getEVENT(),events.getTIME(),getRequestCode(events.getDATE(),events.getEVENT(),events.getTIME ()));
+                    updateEvent(events.getDATE(),events.getEVENT(),events.getTIME(),"on");
+                    notifyDataSetChanged();
+
+                }
+
             }
         } );
     }
@@ -63,7 +114,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     {
         TextView Date,Event,Time;
         Button delete;
-
+        ImageButton setAlarm;
 
         public MyViewHolder(@NonNull View itemView)
         {
@@ -72,8 +123,32 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
                 Event = itemView.findViewById(R.id.eventName);
                 Time = itemView.findViewById(R.id.Time);
                 delete = itemView.findViewById(R.id.btnDelete);
-
+                setAlarm = itemView.findViewById(R.id.btnAlarm);
         }
+    }
+
+    private Date ConvertStringToDate(String eventDate)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag ("pl-PL" ));
+        Date date = null;
+        try {
+            date = format.parse(eventDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace ();
+        }
+        return date;
+    }
+
+    private  Date  ConvertStringToTime(String eventDate)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("kk:mm", Locale.forLanguageTag ("pl-PL" ));
+        Date date = null;
+        try {
+            date = format.parse(eventDate);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace ();
+        }
+        return date;
     }
 
     private void  deleteCalendarEvent(String event, String date, String time)
@@ -84,4 +159,68 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         dbOpenHelper.close();
     }
 
+    private boolean isAlarmed(String date, String event, String time)
+    {
+        boolean alarmed = false;
+        dbOpenHelper = new DBOpenHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = dbOpenHelper.ReadIDEvents (date,event,time, sqLiteDatabase);
+        while (cursor.moveToNext())
+        {
+            String notify = cursor.getString(cursor.getColumnIndex(DBStructure.Notify));
+            if (notify.equals("on"))
+            {
+                alarmed = true;
+            }else
+            {
+                alarmed = false;
+            }
+        }
+        cursor.close();
+        dbOpenHelper.close();
+        return alarmed;
+    }
+
+    private void setAlarm(Calendar calendar, String event, String time, int RequestCode)
+    {
+        Intent intent = new Intent(context.getApplicationContext(),AlarmReceiver.class);
+        intent.putExtra( "event",event);
+        intent.putExtra( "time",time);
+        intent.putExtra( "id",RequestCode);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,RequestCode,intent,PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+    }
+
+
+    private void cancelAlarm(int RequestCode)
+    {
+        Intent intent = new Intent(context.getApplicationContext(),AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,RequestCode,intent,PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    private  int getRequestCode(String date, String event, String time)
+    {
+        int code = 0;
+        dbOpenHelper = new DBOpenHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = dbOpenHelper.ReadIDEvents(date, event, time, sqLiteDatabase);
+        while (cursor.moveToNext())
+        {
+            code = cursor.getInt(cursor.getColumnIndex(DBStructure.ID));
+        }
+        cursor.close();
+        dbOpenHelper.close();
+
+        return code;
+    }
+    private  void updateEvent(String date, String event, String time, String notify)
+    {
+        dbOpenHelper = new DBOpenHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getWritableDatabase();
+        dbOpenHelper.updateEvent(date,event,time,notify,sqLiteDatabase);
+        dbOpenHelper.close();
+    }
 }

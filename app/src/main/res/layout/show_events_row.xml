@@ -49,6 +49,14 @@
                 android:text="Godzina"
                 android:textSize="20dp"/>
 
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:id="@+id/btnAlarm"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_action_notification_off"
+                android:background="@color/navy"/>
 
             <Button
                 android:layout_width="match_parent"
