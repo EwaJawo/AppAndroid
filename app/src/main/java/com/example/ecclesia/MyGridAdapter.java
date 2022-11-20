@@ -24,7 +24,7 @@ public class MyGridAdapter extends ArrayAdapter
 {
     List<Date>dates;
     Calendar currentDate;
-    List<Events> events; //eventsList
+    List<Events> events;
     LayoutInflater inflater;
 
     public MyGridAdapter(@NonNull Context context, List<Date>dates,Calendar currentDate, List<Events> events)
@@ -47,6 +47,7 @@ public class MyGridAdapter extends ArrayAdapter
         int currentMonth = currentDate.get(Calendar.MONTH)+1;
         int currentYear = currentDate.get(Calendar.YEAR);
 
+         int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
         View view = convertView;
         if (view == null)
@@ -59,10 +60,17 @@ public class MyGridAdapter extends ArrayAdapter
             view.setBackgroundColor(getContext().getResources().getColor (R.color.navy));
 
          }
+        else if (DayNo == currentDay)
+        {
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+        }
         else
         {
             view.setBackgroundColor(Color.parseColor("#cccccc"));
         }
+
+
+
         TextView Day_Number  = view.findViewById(R.id.day);
         TextView EventNumber = view.findViewById (R.id.events_name);
         Day_Number.setText(String.valueOf(DayNo));
