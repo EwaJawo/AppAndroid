@@ -41,13 +41,14 @@ public class MyGridAdapter extends ArrayAdapter
         Date monthDate = dates.get(position);
         Calendar dateCalendar  = Calendar.getInstance(Locale.forLanguageTag ("pl-PL"));
         dateCalendar.setTime(monthDate);
-        int DayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
-        int displayMonth = dateCalendar.get(Calendar.MONTH)+1;
-        int displayYear = dateCalendar.get(Calendar.YEAR);
-        int currentMonth = currentDate.get(Calendar.MONTH)+1;
-        int currentYear = currentDate.get(Calendar.YEAR);
 
+         int DayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
+         int displayMonth = dateCalendar.get(Calendar.MONTH)+1;
+         int displayYear = dateCalendar.get(Calendar.YEAR);
+         int currentMonth = currentDate.get(Calendar.MONTH)+1;
+         int currentYear = currentDate.get(Calendar.YEAR);
          int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
 
         View view = convertView;
         if (view == null)
@@ -55,20 +56,20 @@ public class MyGridAdapter extends ArrayAdapter
             view = inflater.inflate(R.layout.single_cell,parent,false);
         }
 
-        if (displayMonth == currentMonth && displayYear == currentYear)
+        if (DayNo == currentDay)
+        {
+            view.setBackgroundColor(getContext().getResources().getColor (R.color.light_blue));
+        }
+
+        else if (displayMonth == currentMonth && displayYear == currentYear)
         {
             view.setBackgroundColor(getContext().getResources().getColor (R.color.navy));
-
-         }
-        else if (DayNo == currentDay)
-        {
-            view.setBackgroundColor(getContext().getResources().getColor(R.color.white));
         }
+
         else
         {
-            view.setBackgroundColor(Color.parseColor("#cccccc"));
+            view.setBackgroundColor(Color.parseColor("#d3d3d3"));
         }
-
 
 
         TextView Day_Number  = view.findViewById(R.id.day);

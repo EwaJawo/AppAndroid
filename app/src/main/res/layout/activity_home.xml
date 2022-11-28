@@ -13,8 +13,7 @@
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:layout_marginBottom="40dp"
-        />
+        android:layout_marginBottom="40dp" />
 
     <Button
         android:id="@+id/addMassIntention"
@@ -29,7 +28,7 @@
         android:background="@drawable/book"/>
 
     <Button
-        android:id="@+id/addAnnouncement"
+        android:id="@+id/btnAddNotes"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:backgroundTint="@color/navy"
@@ -44,12 +43,12 @@
         android:id="@+id/btnSettings"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:backgroundTint="@color/navy"
-        android:textColor="@color/white"
+        android:layout_below="@+id/btnAddNotes"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/addAnnouncement"
-        android:layout_marginRight="85dp"
-        android:background="@drawable/settings"/>
+        android:layout_marginRight="90dp"
+        android:background="@drawable/settings"
+        android:backgroundTint="@color/navy"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btnAddEvent"
@@ -60,7 +59,7 @@
         android:layout_below="@+id/addMassIntention"
         android:textColor="@color/white"
         android:layout_marginLeft="85dp"
-        android:background="@drawable/calendar" />
+        android:background="@drawable/calendar"/>
 
     <Button
         android:id="@+id/btnLogOut"
@@ -74,7 +73,7 @@
         android:backgroundTint="@color/navy"
         android:hint="WYLOGUJ SIĘ "
         android:gravity="center"
-        android:textColorHint="@color/white" />
+        android:textColorHint="@color/white"/>
 
 
 

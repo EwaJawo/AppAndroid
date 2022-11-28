@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/navy">
+
+    <View
+        android:id="@+id/rowTab"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        class="android.view.View"
+        android:background="@color/blue_02"/>
+
+        <TextView
+            android:id="@+id/rowText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Treść notatki"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@color/green"/>
+    </LinearLayout>
+</LinearLayout>

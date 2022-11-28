@@ -16,7 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecclesia">
-        <activity android:name=".Calendar_Activity"></activity>
+        <activity
+            android:name=".NotebookActivity" />
+
+
+        <activity android:name=".Calendar_Activity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
@@ -39,10 +43,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"
-            android:exported="true"
-            android:enabled="true">
-        </receiver>
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
