@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class NotebookActivity extends AppCompatActivity {
-
-
+    
     RecyclerView recyclerView;
     NoteAdapter noteAdapter;
     List<Note> noteList;

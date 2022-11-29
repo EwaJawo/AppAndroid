@@ -16,7 +16,7 @@
         android:layout_marginBottom="40dp" />
 
     <Button
-        android:id="@+id/addMassIntention"
+        android:id="@+id/btnPreparatoryBook"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:backgroundTint="@color/navy"
@@ -56,7 +56,7 @@
         android:layout_height="80dp"
         android:backgroundTint="@color/navy"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/addMassIntention"
+        android:layout_below="@+id/btnPreparatoryBook"
         android:textColor="@color/white"
         android:layout_marginLeft="85dp"
         android:background="@drawable/calendar"/>

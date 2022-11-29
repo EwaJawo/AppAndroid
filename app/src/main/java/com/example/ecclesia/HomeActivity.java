@@ -13,15 +13,18 @@ public class HomeActivity extends AppCompatActivity {
     private Button logout;
     private Button addEvent;
     private Button addNotes;
+    private Button addBook;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_home);
+
         logout = findViewById(R.id.btnLogOut);
         addEvent = findViewById(R.id.btnAddEvent);
         addNotes = findViewById(R.id.btnAddNotes);
+        addBook = findViewById(R.id.btnPreparatoryBook);
 
 
         addEvent.setOnClickListener (new View.OnClickListener () {
@@ -32,10 +35,18 @@ public class HomeActivity extends AppCompatActivity {
             }
         } );
 
-        addNotes.setOnClickListener (new View.OnClickListener () {
+        addNotes.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, NotebookActivity.class);
+                Intent intent = new Intent(HomeActivity.this,NotebookActivity.class);
+                startActivity(intent);
+            }
+        } );
+
+        addBook.setOnClickListener ( new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this,Book.class);
                 startActivity(intent);
             }
         } );
@@ -49,9 +60,5 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         } );
-
-
-
-
     }
 }
