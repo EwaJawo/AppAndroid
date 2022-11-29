@@ -1,26 +1,63 @@
 package com.example.ecclesia;
 
 public class Note {
-    private int id;
-    private String content;
+    int id;
+    String noteTitle, noteContents, noteDate, noteTime;
 
-    public  int getId() {
+    Note() {}
+
+    public Note(String noteTitle, String noteContents, String noteDate, String noteTime) {
+        this.noteTitle = noteTitle;
+        this.noteContents = noteContents;
+        this.noteDate = noteDate;
+        this.noteTime = noteTime;
+    }
+
+    public Note(int id, String noteTitle, String noteContents, String noteDate, String noteTime) {
+        this.id = id;
+        this.noteTitle = noteTitle;
+        this.noteContents = noteContents;
+        this.noteDate = noteDate;
+        this.noteTime = noteTime;
+    }
+
+    public int getId() {
         return id;
     }
-    public  void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
 
-
-    public String getContent(){
-        return  content;
-    }
-    public  void setContent(String content){
-        this.content = content;
+    public String getNoteTitle() {
+        return noteTitle;
     }
 
-    public void set(int id, String content){
-        this.id = id;
-        this.content = content;
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
+    }
+
+    public String getNoteContents() {
+        return noteContents;
+    }
+
+    public void setNoteContents(String noteContents) {
+        this.noteContents = noteContents;
+    }
+
+    public String getNoteDate() {
+        return noteDate;
+    }
+
+    public void setNoteDate(String noteDate) {
+        this.noteDate = noteDate;
+    }
+
+    public String getNoteTime() {
+        return noteTime;
+    }
+
+    public void setNoteTime(String noteTime) {
+        this.noteTime = noteTime;
     }
 }
