@@ -16,9 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecclesia">
-        <activity android:name=".Book" />
+        <activity android:name=".ModifyNoteActivity"></activity>
         <activity android:name=".AddNoteActivity" />
-        <activity android:name=".NotebookActivity" />
+        <activity android:name=".NoteApp" />
+        <activity android:name=".Book" />
         <activity android:name=".Calendar_Activity" />
 
         <meta-data

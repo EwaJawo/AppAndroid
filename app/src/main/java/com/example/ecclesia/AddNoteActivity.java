@@ -1,69 +1,49 @@
 package com.example.ecclesia;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+public class AddNoteActivity extends Activity implements View.OnClickListener {
 
-import java.util.Calendar;
-
-public class AddNoteActivity extends AppCompatActivity {
-    EditText title, content;
-    Button btnAddNote;
-    String todayDate, currentTime;
-    Calendar calendar;
+    private Button btnAddToDo;
+    private EditText subEditText;
+    private EditText noteEdit;
+    private DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.activity_add_note );
+        super.onCreate (savedInstanceState);
+        setTitle ("Add Record");
+        setContentView ( R.layout.activity_add_note);
 
-        getSupportActionBar().setTitle("Dodano Notatkę");
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        subEditText = findViewById(R.id.subjectEdiText);
+        noteEdit = findViewById(R.id.noteEdit);
+        btnAddToDo= findViewById(R.id.btnAdd );
 
-        title = findViewById(R.id.addNote);
-        content = findViewById(R.id.noteContent);
-        btnAddNote = findViewById(R.id.btnAddNote);
+        dbManager = new DBManager (this);
+        dbManager.open();
+        btnAddToDo.setOnClickListener(this);
 
-        calendar = Calendar.getInstance();
-        todayDate = calendar.get(Calendar.YEAR)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
-        currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
-        Log.d("Calendar", "Date and Time" + todayDate+" and "+currentTime);
-
-        btnAddNote.setOnClickListener ( new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                Note note = new Note (title.getText().toString (),content.getText().toString(),todayDate,currentTime);
-                NoteDatabase db = new NoteDatabase(AddNoteActivity.this);
-                db.AddNote(note);
-
-                Intent intent = new Intent(AddNoteActivity.this, NotebookActivity.class);
-                startActivity(intent);
-
-                Toast.makeText(getApplicationContext(), "Zapisano",Toast.LENGTH_LONG).show();
-            }
-        } );
-
-    }
-    public String pad(int i){
-        if(i < 0)
-            return "0"+i;
-        return String.valueOf(i);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            finish();
-            return true;
+    public void onClick(View v) {
+        switch (v.getId ()){
+            case R.id.btnAdd:
+                final String name = subEditText.getText().toString();
+                final String cont = noteEdit.getText().toString();
+
+                dbManager.insert(name,cont);
+
+                Intent main = new Intent(AddNoteActivity.this,
+                        NoteApp.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(main);
+                break;
         }
-        return super.onOptionsItemSelected(item );
     }
 }

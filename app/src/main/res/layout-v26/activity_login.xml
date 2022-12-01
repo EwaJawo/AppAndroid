@@ -67,13 +67,14 @@
             android:layout_height="35dp"
             android:background="@drawable/rounded"
             android:gravity="center"
-            android:text="ZAlOGUJ SIĘ"
-            android:textColor="@color/navy"
+           android:text="@string/zaloguj_sie"
+            android:backgroundTint="@color/navy"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.811" />
+            app:layout_constraintVertical_bias="0.811"
+            android:textColorHint="@color/white"/>
 
         <TextView
             android:id="@+id/textSignUp"
