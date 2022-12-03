@@ -43,7 +43,7 @@ public class NoteApp extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-        listView.setAdapter(adapter);
+         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener () {
             @Override

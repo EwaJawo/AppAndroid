@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         addBook.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this,Book.class);
+                Intent intent = new Intent(HomeActivity.this,PrayerBookActivity.class);
                 startActivity(intent);
             }
         } );
