@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +20,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthEmailException;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+
+import static java.security.AccessController.getContext;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +36,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     private TextView loginInApp;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
@@ -46,18 +52,25 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         confirmPasswordEdit = findViewById ( R.id.confirmPassword );
         loginInApp = findViewById ( R.id.textLoginIn );
         progressBar = findViewById ( R.id.progressBar );
+
+        loginInApp.setOnClickListener ( new View.OnClickListener () {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent ( Registration.this, LoginActivity.class );
+                startActivity ( intent );
+                finish ();
+            }
+        } );
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnRegister:
-                registerUser(); 
+                registerUser();
                 break;
         }
     }
-
-
 
     private void registerUser() {
         String name = nameUserEdit.getText().toString().trim();
@@ -78,6 +91,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         if (!Patterns.EMAIL_ADDRESS.matcher ( email ).matches ()) {
             emailEdit.setError ("Proszę, podac poprawny adres e-mail" );
             emailEdit.requestFocus ();
+            return;
         }
         if (password.isEmpty ()) {
             passwordEdit.setError ("Wpisz hasło");
@@ -100,13 +114,13 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        progressBar.setVisibility (View.VISIBLE );
+        progressBar.setVisibility (View.GONE );
 
         mAuth.createUserWithEmailAndPassword ( email, password )
                 .addOnCompleteListener ( new OnCompleteListener<AuthResult> () {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
                         if (task.isSuccessful ()) {
                             User user = new User ( email, password );
                             FirebaseDatabase.getInstance ().getReference ( "Users" )
@@ -114,23 +128,20 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                     .setValue ( user ).addOnCompleteListener ( new OnCompleteListener<Void> () {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful ())
-                                    {
-                                        SendEmailVerification();
+                                    if (task.isSuccessful ()) {
+                                        SendEmailVerification ();
                                         Toast.makeText ( Registration.this, "Rejestracja zakończona pomyślnie", Toast.LENGTH_LONG ).show ();
-                                        progressBar.setVisibility ( View.VISIBLE );
-
+                                        //progressBar.setVisibility ( View.VISIBLE );
                                     } else {
                                         Toast.makeText ( Registration.this, "Rejestracja nie powiodła się!, spróbuj jeszcze raz ", Toast.LENGTH_LONG ).show ();
                                         progressBar.setVisibility ( View.VISIBLE );
                                     }
                                 }
-                            } );
+                            });
+                                }
                         }
-                    }
                 } );
     }
-
     private void SendEmailVerification() {
             FirebaseUser user = FirebaseAuth.getInstance ().getCurrentUser ();
             if (user != null) {

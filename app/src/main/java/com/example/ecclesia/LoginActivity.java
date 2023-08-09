@@ -77,9 +77,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty (email)) {
             emailEdit.setError ("Wpisz e-mail");
+            emailEdit.requestFocus();
             return;
         } else if (TextUtils.isEmpty (password)) {
             passwordEdit.setError ("Wpisz hasło");
+            passwordEdit.requestFocus();
             return;
         }
 
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     VerificationEmail ();
                 }
                 else {
-                    Toast.makeText ( LoginActivity.this, "Logowanie nie powiodło się!", Toast.LENGTH_LONG ).show ();
+                    Toast.makeText ( LoginActivity.this, "Logowanie nie powiodło się! Zarejestruj sie!", Toast.LENGTH_LONG ).show ();
                 }
             }
         } );
@@ -116,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             {
                 Toast.makeText ( LoginActivity.this, "Zweryfikuj swój email", Toast.LENGTH_LONG ).show ();
                 FirebaseAuth.getInstance().signOut ();
+                finish ();
 
             }
         }

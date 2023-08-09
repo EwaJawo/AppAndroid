@@ -30,16 +30,16 @@ public class HomeActivity extends AppCompatActivity {
         addEvent.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,Calendar_Activity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this,Calendar_Activity.class);
+               // startActivity(intent);
             }
         } );
 
         addNotes.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,NoteApp.class);
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this,NoteApp.class);
+               // startActivity(intent);
             }
         } );
 

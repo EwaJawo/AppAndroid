@@ -3,6 +3,7 @@ package com.example.ecclesia;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -48,11 +49,7 @@ public class ForgotPassword extends AppCompatActivity {
             emailEdit.requestFocus ();
             return;
         }
-        if (Patterns.EMAIL_ADDRESS.matcher ( email ).matches ()) {
-            emailEdit.setError ( "Proszę podać poprawny adres e-mail" );
-            emailEdit.requestFocus ();
-            return;
-        }
+
         progressBar.setVisibility ( View.VISIBLE );
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener ( new OnCompleteListener<Void> () {
             @Override
@@ -60,8 +57,8 @@ public class ForgotPassword extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     Toast.makeText(ForgotPassword.this, "Sprawdź swój adres e-mail, aby zresetować hasło",Toast .LENGTH_LONG).show ();
-                }else{
-                    Toast.makeText(ForgotPassword.this, "Błąd, spróbuj ponownie", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent ( ForgotPassword.this, LoginActivity.class );
+                    startActivity ( intent );
                 }
             }
         } );
