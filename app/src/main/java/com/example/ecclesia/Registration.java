@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static java.security.AccessController.getContext;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
@@ -36,6 +40,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     private TextView loginInApp;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
+    Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
@@ -113,9 +119,17 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             confirmPasswordEdit.setError ("Podałeś różne hasła");
             return;
         }
+        else  {
+            doRegistration(email,password);
+        }
 
         progressBar.setVisibility (View.GONE );
 
+
+    }
+
+    private void doRegistration(String email, String password)
+    {
         mAuth.createUserWithEmailAndPassword ( email, password )
                 .addOnCompleteListener ( new OnCompleteListener<AuthResult> () {
                     @Override
@@ -127,39 +141,61 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                     .child ( FirebaseAuth.getInstance ().getCurrentUser ().getUid () )
                                     .setValue ( user ).addOnCompleteListener ( new OnCompleteListener<Void> () {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
                                     if (task.isSuccessful ()) {
-                                        SendEmailVerification ();
                                         Toast.makeText ( Registration.this, "Rejestracja zakończona pomyślnie", Toast.LENGTH_LONG ).show ();
-                                        //progressBar.setVisibility ( View.VISIBLE );
-                                    } else {
-                                        Toast.makeText ( Registration.this, "Rejestracja nie powiodła się!, spróbuj jeszcze raz ", Toast.LENGTH_LONG ).show ();
+                                        SendEmailVerification ();
                                         progressBar.setVisibility ( View.VISIBLE );
                                     }
                                 }
                             });
-                                }
                         }
-                } );
+                    }
+                } ).addOnFailureListener ( new OnFailureListener () {
+            @Override
+            public void onFailure(Exception e) {
+                if (e instanceof FirebaseAuthUserCollisionException)
+                {
+                    emailEdit.setError ( "Konto z takim adresem email już istnieje");
+                    emailEdit.requestFocus ();
+                }
+            }
+        } );
     }
     private void SendEmailVerification() {
+
             FirebaseUser user = FirebaseAuth.getInstance ().getCurrentUser ();
             if (user != null) {
 
                 user.sendEmailVerification ().addOnCompleteListener ( new OnCompleteListener<Void> () {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+
+
                         if (task.isSuccessful ()) {
                             Toast.makeText ( Registration.this, " Sprawdź swoj adrers e-mail", Toast.LENGTH_LONG ).show ();
-                            Intent intent = new Intent ( Registration.this, LoginActivity.class );
-                            startActivity ( intent );
-                            FirebaseAuth.getInstance().signOut ();
-                        } else {
-                            Toast.makeText ( Registration.this, "Werfikacja nie powiodła się", Toast.LENGTH_LONG ).show ();
-                            FirebaseAuth.getInstance().signOut ();
-                        }
+                            timer = new Timer ();
+                            timer.schedule ( new TimerTask () {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent ( Registration.this, LoginActivity.class );
+                                    startActivity ( intent );
+                                    finish ();
+
+                                }
+                            } ,8000);
+
+                           //Intent intent = new Intent ( Registration.this, LoginActivity.class );
+                           //startActivity ( intent );
+                           //FirebaseAuth.getInstance().signOut ();
+                        } //else {
+                            //Toast.makeText ( Registration.this, "Werfikacja nie powiodła się", Toast.LENGTH_LONG ).show ();
+                           // FirebaseAuth.getInstance().signOut ();
+                           //finish ();
+                       // }
                     }
-                } );
+                });
 
             }
 

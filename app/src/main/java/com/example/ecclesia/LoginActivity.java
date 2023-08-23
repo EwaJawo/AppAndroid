@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             else
             {
                 Toast.makeText ( LoginActivity.this, "Zweryfikuj swój email", Toast.LENGTH_LONG ).show ();
-                FirebaseAuth.getInstance().signOut ();
+               // FirebaseAuth.getInstance().signOut ();
                 finish ();
 
             }
