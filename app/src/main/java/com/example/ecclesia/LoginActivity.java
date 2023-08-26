@@ -15,9 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -71,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
         } );
     }
 
-    private void Login() {
+    private void Login()
+    {
         String email = emailEdit.getText().toString().trim();
         String password = passwordEdit.getText().toString().trim();
 
@@ -85,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+
         progressBar.setVisibility(View.VISIBLE);
 
 
@@ -96,9 +103,24 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     VerificationEmail ();
                 }
-                else {
-                    Toast.makeText ( LoginActivity.this, "Logowanie nie powiodło się! Zarejestruj sie!", Toast.LENGTH_LONG ).show ();
+            }
+        } ).addOnFailureListener ( new OnFailureListener () {
+            @Override
+            public void onFailure(Exception e) {
+                if(e instanceof FirebaseAuthInvalidUserException) {
+                    Toast.makeText(LoginActivity.this, "Nie znaleziono tego użytkownika. Utwórz nowe konto",Toast.LENGTH_SHORT).show ();
+                    Intent refresh = new Intent (LoginActivity.this, LoginActivity.class);
+                    startActivity (refresh);
+                    finish ();
                 }
+
+                else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(LoginActivity.this, "Hasło jest  nieprawidłowe. Spróbuj wprowadzic jeszcze raz hasło",Toast.LENGTH_SHORT).show ();
+                    Intent refresh = new Intent (LoginActivity.this, LoginActivity.class);
+                    startActivity (refresh);
+                    finish ();
+                }
+
             }
         } );
     }
