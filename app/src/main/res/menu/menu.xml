@@ -5,10 +5,10 @@
     tools:context="com.example.ecclesia.NoteApp">
 
     <item
-        android:id="@+id/addRecord"
+        android:id="@+id/btnAddRecord"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
-        android:title="Add Item"
+        android:title="Dodaj"
         app:showAsAction="always"/>
 
 </menu>

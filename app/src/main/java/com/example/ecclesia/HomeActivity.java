@@ -38,8 +38,8 @@ public class HomeActivity extends AppCompatActivity {
         addNotes.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(HomeActivity.this,NoteApp.class);
-               // startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this,MainAnnouncements.class);
+               startActivity(intent);
             }
         } );
 
