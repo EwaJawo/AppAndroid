@@ -30,11 +30,12 @@ public class MainAnnouncements extends AppCompatActivity {
         super.onCreate (savedInstanceState );
         setContentView (R.layout.activity_main_announcements);
 
-        mAnnouncementsList = findViewById (R.id. announcementList);
+        mAnnouncementsList = (RecyclerView) findViewById (R.id. announcementList);
 
         gridLayoutManager = new GridLayoutManager(  this,3, GridLayoutManager.VERTICAL,false);
         mAnnouncementsList.setHasFixedSize(true);
         mAnnouncementsList.setLayoutManager(gridLayoutManager);
+
 
         fireAuth = FirebaseAuth.getInstance();
         if(fireAuth.getCurrentUser() !=null){
@@ -46,33 +47,36 @@ public class MainAnnouncements extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        FirebaseRecyclerAdapter<AnnouncementsModel,AnnounceViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementsModel,AnnounceViewHolder>(
+        FirebaseRecyclerAdapter<AnnouncementsModel,AnnounceViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementsModel, AnnounceViewHolder> (
                 AnnouncementsModel.class,
-                 R.layout.single_announce_layout,
-                 AnnounceViewHolder.class,
+                R.layout.single_announce_layout,
+                AnnounceViewHolder.class,
                 fAnnouncementsDatabase
         ) {
             @Override
-            protected void populateViewHolder(AnnounceViewHolder viewHolder, AnnouncementsModel model, int position){
-             String AnnounceId = getRef(position).getKey();
-             fAnnouncementsDatabase.child(AnnounceId).addValueEventListener ( new ValueEventListener () {
-                 @Override
-                 public void onDataChange(DataSnapshot dataSnapshot) {
-                     String topic = dataSnapshot.child("topic").getValue().toString();
-                     String timestamp = dataSnapshot.child ("timestamp").getValue().toString();
+            protected void populateViewHolder( final AnnounceViewHolder viewHolder, AnnouncementsModel announcementsModel, int i) {
+                String announceId = getRef(i).getKey();
+                fAnnouncementsDatabase.child(announceId).addValueEventListener ( new ValueEventListener () {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        String topic = snapshot.child("topic").getValue().toString();
+                        String timestamp = snapshot.child ("timestamp").getValue().toString();
 
-                     viewHolder.setAnnouncementsTopic(topic);
-                     viewHolder.setAnnouncementsTime(timestamp);
-                 }
+                        viewHolder.setAnnouncementsTopic (topic );
+                        viewHolder.setAnnouncementsTopic (timestamp);
+                    }
 
-                 @Override
-                 public void onCancelled(DatabaseError error) {
-                 }
-             } );
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                    }
+                } );
             }
         };
         mAnnouncementsList.setAdapter(firebaseRecyclerAdapter);
     }
+
+
 
     private void updateUI() {
         if (fireAuth.getCurrentUser () !=null){
