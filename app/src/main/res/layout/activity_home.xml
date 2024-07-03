@@ -40,7 +40,7 @@
         android:background="@drawable/notebook"/>
 
     <Button
-        android:id="@+id/btnSettings"
+        android:id="@+id/btnMessage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@+id/btnAddNotes"

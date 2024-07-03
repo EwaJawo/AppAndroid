@@ -16,7 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecclesia">
-        <activity android:name=".MainAnnouncements"></activity>
+        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".PreparatoryBookActivity" />
+        <activity android:name=".EventsActivity" />
+        <activity android:name=".AnnouncementsActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
@@ -25,9 +28,6 @@
         <activity android:name=".ForgotPassword" />
         <activity android:name=".Registration" />
         <activity android:name=".HomeActivity" />
-        <activity
-            android:name=".Announcements"
-            android:parentActivityName=".HomeActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

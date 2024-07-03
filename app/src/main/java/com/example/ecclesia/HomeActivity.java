@@ -14,6 +14,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button addEvent;
     private Button addNotes;
     private Button addBook;
+    private Button addChat;
 
 
     @Override
@@ -25,21 +26,37 @@ public class HomeActivity extends AppCompatActivity {
         addEvent = findViewById(R.id.btnAddEvent);
         addNotes = findViewById(R.id.btnAddNotes);
         addBook = findViewById(R.id.btnPreparatoryBook);
+        addChat = findViewById(R.id.btnMessage);
 
+        addBook.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, PreparatoryBookActivity.class);
+                startActivity(intent);
+            }
+        } );
+
+        addNotes.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, AnnouncementsActivity.class);
+                startActivity(intent);
+            }
+        } );
 
         addEvent.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(HomeActivity.this,Calendar_Activity.class);
-               // startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this,EventsActivity.class);
+                startActivity(intent);
             }
         } );
 
-        addNotes.setOnClickListener ( new View.OnClickListener () {
+        addChat.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,MainAnnouncements.class);
-               startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this,ChatActivity.class);
+                startActivity(intent);
             }
         } );
 
